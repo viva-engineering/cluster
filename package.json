@@ -1,0 +1,28 @@
+{
+  "name": "@viva-eng/cluster",
+  "version": "1.0.0",
+  "description": "A server clustering library for node.js",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc --build tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viva-engineering/cluster.git"
+  },
+  "keywords": [
+    "cluster"
+  ],
+  "author": "James Brumond <james@jbrumond.me> (http://www.jbrumond.me)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viva-engineering/cluster/issues"
+  },
+  "homepage": "https://github.com/viva-engineering/cluster#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^11.11.4",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.4000"
+  }
+}
