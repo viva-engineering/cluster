@@ -3,6 +3,8 @@ import './shutdown';
 import { isMaster } from 'cluster';
 import { setConfig, ClusterConfig } from './config';
 
+export { isShuttingDown, setShutdownTimeout, addOnShutdown, removeOnShutdown, shutdown } from './shutdown';
+
 export const initCluster = (config: ClusterConfig) => {
 	setConfig(config);
 
