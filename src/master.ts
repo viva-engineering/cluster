@@ -1,7 +1,8 @@
 
 import { cpus } from 'os';
 import * as cluster from 'cluster';
-import { ClusterConfig } from './index';
+import { ClusterConfig } from './config';
+import { isShuttingDown } from './shutdown';
 
 const noopLog = (message: string, meta?: object) => { };
 
@@ -69,7 +70,9 @@ export const init = (config: ClusterConfig) => {
 			return;
 		}
 
-		respawnWorker();
+		if (! isShuttingDown()) {
+			respawnWorker();
+		}
 	};
 
 	// When a worker dies, queue up the handler to take care of it
