@@ -43,6 +43,13 @@ export const removeOnShutdown = (callback: ShutdownHandler) => {
 	}
 };
 
+// Add a shutdown handler that waits for all the workers to shutdown
+addOnShutdown(async () => {
+	while (Object.keys(workers).length) {
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+	}
+});
+
 /**
  * Shuts down the cluster after allowing running tasks to clean up
  *
