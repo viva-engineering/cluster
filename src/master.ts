@@ -57,20 +57,20 @@ export const init = (config: ClusterConfig) => {
 	 * will attempt to respawn the crashed worker.
 	 */
 	const handleWorkerDeath = (worker: cluster.Worker, code: number, signal: string) => {
-		log('Cluster worker shutdown', {
-			pid: worker.process.pid,
-			code,
-			signal
-		})
-
-		if (Object.keys(cluster.workers).length === 0) {
-			log('All cluster workers have shutdown; Exiting');
-			process.exit(1);
-
-			return;
-		}
-
 		if (! isShuttingDown()) {
+			log('Cluster worker shutdown', {
+				pid: worker.process.pid,
+				code,
+				signal
+			})
+
+			if (Object.keys(cluster.workers).length === 0) {
+				log('All cluster workers have shutdown; Exiting');
+				process.exit(1);
+
+				return;
+			}
+
 			respawnWorker();
 		}
 	};

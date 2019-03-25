@@ -44,11 +44,17 @@ export const removeOnShutdown = (callback: ShutdownHandler) => {
 };
 
 // Add a shutdown handler that waits for all the workers to shutdown
-addOnShutdown(async () => {
-	while (Object.keys(workers).length) {
-		await new Promise((resolve) => setTimeout(resolve, 1000));
-	}
-});
+if (isMaster) {
+	addOnShutdown(async () => {
+		clusterConfig.log('Waiting until there are no running workers before shutting down');
+
+		while (Object.keys(workers).length) {
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+		}
+
+		clusterConfig.log('Workers have all shutdown');
+	});
+}
 
 /**
  * Shuts down the cluster after allowing running tasks to clean up
