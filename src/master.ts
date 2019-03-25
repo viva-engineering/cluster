@@ -3,6 +3,7 @@ import { cpus } from 'os';
 import * as cluster from 'cluster';
 import { ClusterConfig } from './config';
 import { isShuttingDown } from './shutdown';
+import { setTitleForStatus } from './title';
 
 const noopLog = (message: string, meta?: object) => { };
 
@@ -33,6 +34,10 @@ export const init = (config: ClusterConfig) => {
 	for (let i = 0; i < maxWorkers; i++) {
 		cluster.fork();
 	}
+
+	waitForAllWorkers().then(() => {
+		setTitleForStatus('running');
+	});
 
 	let respawnBackoff: number = 0;
 
@@ -79,4 +84,18 @@ export const init = (config: ClusterConfig) => {
 	cluster.on('exit', (worker, code, signal) => {
 		setTimeout(() => handleWorkerDeath(worker, code, signal), 100);
 	});
+};
+
+const waitForWorker = (worker: cluster.Worker) : Promise<void> => {
+	return new Promise((resolve) => {
+		worker.on('online', () => resolve());
+	});
+};
+
+const waitForAllWorkers = () : Promise<void[]> => {
+	const promises = Object.keys(cluster.workers).map((id) => {
+		return waitForWorker(cluster.workers[id]);
+	});
+
+	return Promise.all(promises);
 };

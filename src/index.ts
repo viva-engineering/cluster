@@ -2,6 +2,7 @@
 import './shutdown';
 import { isMaster } from 'cluster';
 import { setConfig, ClusterConfig } from './config';
+import { setTitleForStatus } from './title';
 
 export { isShuttingDown, setShutdownTimeout, addOnShutdown, removeOnShutdown, shutdown } from './shutdown';
 
@@ -10,6 +11,8 @@ export const initCluster = (config: ClusterConfig) => {
 
 	// If we are running in single-threaded mode, just start the server
 	if (! config.threads || ! isMaster) {
+		setTitleForStatus('starting');
+
 		if (config.log) {
 			config.log('Worker started', { pid: process.pid });
 		}

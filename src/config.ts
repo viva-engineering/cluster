@@ -6,6 +6,9 @@ export const setConfig = (config: ClusterConfig) => {
 };
 
 export interface ClusterConfig {
+	/** The base title to set on the terminal */
+	title?: string,
+
 	/**
 	 * The number of worker threads to start. Set to 0 to run in single-threaded
 	 * mode (no cluster). Set to 'auto' to let the server figure out how many workers

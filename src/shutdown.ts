@@ -2,6 +2,7 @@
 import { clusterConfig } from './config';
 import { isMaster, workers } from 'cluster';
 import { createInterface } from 'readline';
+import { setTitleForStatus } from './title';
 
 let shutdownTimeout: number = 30000;
 let _isShuttingDown: boolean = false;
@@ -64,6 +65,7 @@ if (isMaster) {
 export const shutdown = async (exitCode: number = 0) : Promise<void> => {
 	_isShuttingDown = true;
 
+	setTitleForStatus('shutting down');
 	clusterConfig.log('Beginning shutdown process', {
 		exitCode,
 		timeout: shutdownTimeout
